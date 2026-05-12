@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net/url"
 	"strings"
+
+	"github.com/aquaflamingo/tubemedicmvp/internal/classifier"
 )
 
 // Status represents the health of a checked URL.
@@ -24,6 +26,7 @@ type CheckResult struct {
 	Status     Status
 	StatusCode int
 	Error      string
+	Priority   classifier.Priority
 }
 
 // Summary groups results by status for reporting.
@@ -32,8 +35,10 @@ type Summary struct {
 	Broken    int
 	Warnings  int
 	Live      int
-	BrokenLinks []CheckResult
-	WarnLinks   []CheckResult
+	BrokenLinks    []CheckResult
+	WarnLinks      []CheckResult
+	CriticalBroken int
+	CriticalLinks  []CheckResult
 }
 
 // Classify determines the status based on status code and error.

@@ -5,6 +5,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/aquaflamingo/tubemedicmvp/internal/classifier"
 	"github.com/aquaflamingo/tubemedicmvp/internal/youtube"
 )
 
@@ -34,6 +35,7 @@ func CheckAll(links []youtube.ScrapedLink, concurrency int) []CheckResult {
 	results := make([]CheckResult, 0, len(links))
 
 	for _, link := range links {
+		priority := classifier.Classify(link)
 		if ShouldSkip(link.URL) {
 			results = append(results, CheckResult{
 				URL:        link.URL,
@@ -41,21 +43,23 @@ func CheckAll(links []youtube.ScrapedLink, concurrency int) []CheckResult {
 				VideoTitle: link.VideoTitle,
 				Status:     StatusSkipped,
 				Error:      "skipped (non-http scheme)",
+				Priority:   priority,
 			})
 			continue
 		}
 
 		wg.Add(1)
-		go func(l youtube.ScrapedLink) {
+		go func(l youtube.ScrapedLink, p classifier.Priority) {
 			defer wg.Done()
 			sem <- struct{}{}
 			defer func() { <-sem }()
 
 			r := checkOne(l)
+			r.Priority = p
 			mu.Lock()
 			results = append(results, r)
 			mu.Unlock()
-		}(link)
+		}(link, priority)
 	}
 
 	wg.Wait()
@@ -97,7 +101,12 @@ func Summarize(results []CheckResult) Summary {
 		switch r.Status {
 		case StatusBroken:
 			s.Broken++
-			s.BrokenLinks = append(s.BrokenLinks, r)
+			if r.Priority == classifier.PriorityRevenue {
+				s.CriticalBroken++
+				s.CriticalLinks = append(s.CriticalLinks, r)
+			} else {
+				s.BrokenLinks = append(s.BrokenLinks, r)
+			}
 		case StatusWarning:
 			s.Warnings++
 			s.WarnLinks = append(s.WarnLinks, r)

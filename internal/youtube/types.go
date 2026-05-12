@@ -15,6 +15,7 @@ type ScrapedLink struct {
 	URL        string
 	VideoID    string
 	VideoTitle string
+	Context    string // surrounding text from the video description
 }
 
 // Quota tracks YouTube Data API v3 quota consumption.
