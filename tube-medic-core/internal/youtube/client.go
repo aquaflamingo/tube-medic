@@ -120,25 +120,47 @@ func fetchChannelByHandle(apiKey, handle string, q *Quota) (*Channel, error) {
 }
 
 // FetchVideos returns the most recent videos for a channel.
+// Paginates through the search API (max 50 per page) until maxResults
+// is reached or no more pages exist.
 func FetchVideos(apiKey, channelID string, maxResults int, q *Quota) ([]Video, error) {
-	u := fmt.Sprintf("%s/search?part=snippet&channelId=%s&order=date&maxResults=%d&key=%s",
-		baseURL, url.QueryEscape(channelID), maxResults, apiKey)
+	const perPage = 50
+	videos := make([]Video, 0, maxResults)
+	var pageToken string
 
-	var resp apiSearchResponse
-	if err := getJSON(u, &resp, costSearch, q); err != nil {
-		return nil, err
-	}
-
-	videos := make([]Video, 0, len(resp.Items))
-	for _, item := range resp.Items {
-		if item.ID.VideoID == "" {
-			continue
+	for {
+		limit := perPage
+		remaining := maxResults - len(videos)
+		if remaining < limit {
+			limit = remaining
 		}
-		videos = append(videos, Video{
-			ID:    item.ID.VideoID,
-			Title: item.Snippet.Title,
-		})
+
+		u := fmt.Sprintf("%s/search?part=snippet&channelId=%s&order=date&maxResults=%d&key=%s",
+			baseURL, url.QueryEscape(channelID), limit, apiKey)
+		if pageToken != "" {
+			u += "&pageToken=" + url.QueryEscape(pageToken)
+		}
+
+		var resp apiSearchResponse
+		if err := getJSON(u, &resp, costSearch, q); err != nil {
+			return nil, err
+		}
+
+		for _, item := range resp.Items {
+			if item.ID.VideoID == "" {
+				continue
+			}
+			videos = append(videos, Video{
+				ID:    item.ID.VideoID,
+				Title: item.Snippet.Title,
+			})
+		}
+
+		if resp.NextPageToken == "" || len(videos) >= maxResults {
+			break
+		}
+		pageToken = resp.NextPageToken
 	}
+
 	return videos, nil
 }
 
