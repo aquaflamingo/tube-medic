@@ -12,6 +12,7 @@ type Config struct {
 	APIKey     string
 	ChannelURL string
 	MaxVideos  int
+	OutputFile string
 }
 
 func Load() (*Config, error) {
@@ -20,6 +21,7 @@ func Load() (*Config, error) {
 	apiKey := flag.String("api-key", "", "YouTube Data API key (or set YT_API_KEY in .env)")
 	channel := flag.String("channel", "", "Full YouTube channel URL (e.g. https://youtube.com/@mkbhd)")
 	maxVideos := flag.Int("max-videos", 50, "Number of recent videos to scan")
+	output := flag.String("output", "", "Save report to file")
 	flag.Parse()
 
 	if *apiKey == "" {
@@ -38,6 +40,7 @@ func Load() (*Config, error) {
 		APIKey:     *apiKey,
 		ChannelURL: *channel,
 		MaxVideos:  *maxVideos,
+		OutputFile: *output,
 	}, nil
 }
 

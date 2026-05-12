@@ -20,6 +20,7 @@ func TestClassify(t *testing.T) {
 	}{
 		{name: "200 ok", code: 200, err: nil, wantStatus: "working", wantErr: ""},
 		{name: "301 redirect", code: 301, err: nil, wantStatus: "working", wantErr: ""},
+		{name: "403 forbidden", code: 403, err: nil, wantStatus: "warning", wantErr: "403"},
 		{name: "404 not found", code: 404, err: nil, wantStatus: "broken", wantErr: "404"},
 		{name: "410 gone", code: 410, err: nil, wantStatus: "broken", wantErr: "410"},
 		{name: "500 server error", code: 500, err: nil, wantStatus: "broken", wantErr: "500"},
@@ -75,6 +76,8 @@ func TestCheckAll_integration(t *testing.T) {
 			w.WriteHeader(http.StatusOK)
 		case "/notfound":
 			w.WriteHeader(http.StatusNotFound)
+		case "/forbidden":
+			w.WriteHeader(http.StatusForbidden)
 		case "/redirect":
 			http.Redirect(w, r, "/ok", http.StatusMovedPermanently)
 		default:
@@ -94,6 +97,7 @@ func TestCheckAll_integration(t *testing.T) {
 		{URL: ts.URL + "/redirect", VideoID: "v3", VideoTitle: "Redirect"},
 		{URL: ts2.URL + "/err", VideoID: "v4", VideoTitle: "Server Error"},
 		{URL: "mailto:test@example.com", VideoID: "v5", VideoTitle: "Skipped"},
+		{URL: ts.URL + "/forbidden", VideoID: "v6", VideoTitle: "Forbidden"},
 	}
 
 	results := checker.CheckAll(links, 4)
@@ -118,13 +122,16 @@ func TestCheckAll_integration(t *testing.T) {
 	if got["v5"] != "skipped" {
 		t.Errorf("v5 status = %q, want %q", got["v5"], "skipped")
 	}
+	if got["v6"] != "warning" {
+		t.Errorf("v6 status = %q, want %q", got["v6"], "warning")
+	}
 }
 
 func TestSummarize(t *testing.T) {
 	results := []checker.CheckResult{
 		{URL: "https://a.com", Status: checker.StatusWorking},
 		{URL: "https://b.com", Status: checker.StatusBroken, Error: "404"},
-		{URL: "https://c.com", Status: checker.StatusBroken, Error: "TIMEOUT"},
+		{URL: "https://c.com", Status: checker.StatusWarning, Error: "403"},
 		{URL: "https://d.com", Status: checker.StatusWorking},
 		{URL: "mailto:e@com", Status: checker.StatusSkipped},
 	}
@@ -133,13 +140,19 @@ func TestSummarize(t *testing.T) {
 	if s.Total != 5 {
 		t.Errorf("Total = %d, want 5", s.Total)
 	}
-	if s.Broken != 2 {
-		t.Errorf("Broken = %d, want 2", s.Broken)
+	if s.Broken != 1 {
+		t.Errorf("Broken = %d, want 1", s.Broken)
+	}
+	if s.Warnings != 1 {
+		t.Errorf("Warnings = %d, want 1", s.Warnings)
 	}
 	if s.Live != 3 {
 		t.Errorf("Live = %d, want 3", s.Live)
 	}
-	if len(s.BrokenLinks) != 2 {
-		t.Errorf("len(BrokenLinks) = %d, want 2", len(s.BrokenLinks))
+	if len(s.BrokenLinks) != 1 {
+		t.Errorf("len(BrokenLinks) = %d, want 1", len(s.BrokenLinks))
+	}
+	if len(s.WarnLinks) != 1 {
+		t.Errorf("len(WarnLinks) = %d, want 1", len(s.WarnLinks))
 	}
 }
