@@ -1,0 +1,3 @@
+- Build simple ruby script
+- Point to 10 youtube channels in YT middle class (50K - 400K)
+- Create 10 reachout emails
