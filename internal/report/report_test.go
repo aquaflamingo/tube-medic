@@ -28,7 +28,7 @@ func TestPrint_noBrokenLinks(t *testing.T) {
 	}
 
 	got := captureOutput(func() {
-		report.Print(ch, videos, summary)
+		report.Print(os.Stdout, ch, videos, summary, youtube.Quota{})
 	})
 
 	goldenPath := filepath.Join("testdata", "no_broken_links.golden")
@@ -62,7 +62,7 @@ func TestPrint_withBrokenLinks(t *testing.T) {
 	}
 
 	got := captureOutput(func() {
-		report.Print(ch, videos, summary)
+		report.Print(os.Stdout, ch, videos, summary, youtube.Quota{})
 	})
 
 	goldenPath := filepath.Join("testdata", "with_broken_links.golden")

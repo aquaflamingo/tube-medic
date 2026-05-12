@@ -17,6 +17,13 @@ type ScrapedLink struct {
 	VideoTitle string
 }
 
+// Quota tracks YouTube Data API v3 quota consumption.
+// Daily quota resets at midnight Pacific Time (default 10,000 units).
+type Quota struct {
+	Used      int // cumulative units consumed
+	Remaining int // from response headers, -1 if unknown
+}
+
 type apiChannelResponse struct {
 	Items []struct {
 		ID      string `json:"id"`

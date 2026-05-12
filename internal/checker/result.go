@@ -11,6 +11,7 @@ type Status string
 
 const (
 	StatusWorking Status = "working"
+	StatusWarning Status = "warning"
 	StatusBroken  Status = "broken"
 	StatusSkipped Status = "skipped"
 )
@@ -27,10 +28,12 @@ type CheckResult struct {
 
 // Summary groups results by status for reporting.
 type Summary struct {
-	Total  int
-	Broken int
-	Live   int
+	Total     int
+	Broken    int
+	Warnings  int
+	Live      int
 	BrokenLinks []CheckResult
+	WarnLinks   []CheckResult
 }
 
 // Classify determines the status based on status code and error.
@@ -41,6 +44,9 @@ func Classify(code int, err error) (Status, string) {
 	}
 	if code >= 200 && code < 400 {
 		return StatusWorking, ""
+	}
+	if code == 403 {
+		return StatusWarning, fmt.Sprintf("%d", code)
 	}
 	return StatusBroken, fmt.Sprintf("%d", code)
 }
