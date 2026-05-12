@@ -53,54 +53,18 @@ var revenueURLPatterns = []*regexp.Regexp{
 	regexp.MustCompile(`/pro/`),
 }
 
-// revenueKeywords are matched against the surrounding context text (case-insensitive).
-var revenueKeywords = []string{
-	"buy", "purchase", "checkout", "cart",
-	"course", "enroll", "enrollment", "enrol", "class", "curriculum",
-	"product", "digital", "download", "bundle", "pack",
-	"shop", "store", "order",
-	"membership", "premium", "pro", "exclusive",
-	"sale", "offer", "deal", "discount", "coupon",
-	"affiliate", "referral", "commission",
-	"patreon", "ko-fi", "donation", "donate", "support", "tip",
-	"template", "ebook", "pdf", "software", "tool", "app",
-	"subscribe", "subscription",
-	"pricing", "price",
-}
-
-// Classify determines whether a link is revenue-critical based on
-// its URL structure and surrounding context text.
+// Classify determines whether a link is revenue-critical based on its URL.
 func Classify(link youtube.ScrapedLink) Priority {
-	if matchURL(link.URL) {
-		return PriorityRevenue
-	}
-	if matchContext(link.Context) {
-		return PriorityRevenue
-	}
-	return PriorityNormal
-}
-
-func matchURL(raw string) bool {
-	lower := strings.ToLower(raw)
+	lower := strings.ToLower(link.URL)
 	for _, domain := range revenueDomains {
 		if strings.Contains(lower, domain) {
-			return true
+			return PriorityRevenue
 		}
 	}
 	for _, pat := range revenueURLPatterns {
 		if pat.MatchString(lower) {
-			return true
+			return PriorityRevenue
 		}
 	}
-	return false
-}
-
-func matchContext(ctx string) bool {
-	lower := strings.ToLower(ctx)
-	for _, kw := range revenueKeywords {
-		if strings.Contains(lower, kw) {
-			return true
-		}
-	}
-	return false
+	return PriorityNormal
 }

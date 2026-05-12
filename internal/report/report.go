@@ -13,9 +13,8 @@ import (
 const bar = "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 const (
-	colorYellow = "\033[33m"
-	colorRed    = "\033[31m"
-	colorReset  = "\033[0m"
+	colorRed   = "\033[31m"
+	colorReset = "\033[0m"
 )
 
 var useColor = os.Getenv("NO_COLOR") == "" && os.Getenv("TERM") != "dumb"
@@ -54,9 +53,6 @@ func Print(w io.Writer, ch *youtube.Channel, videos []youtube.Video, summary che
 	fmt.Fprintf(w, "  Videos scanned    %d\n", len(videos))
 	fmt.Fprintf(w, "  Total links found %d\n", summary.Total)
 	fmt.Fprintf(w, "  Working           %d\n", summary.Live)
-	if summary.Warnings > 0 {
-		fmt.Fprintf(w, "  Warnings          %d\n", summary.Warnings)
-	}
 	fmt.Fprintf(w, "  Broken            %d\n", summary.Broken)
 	if summary.CriticalBroken > 0 {
 		fmt.Fprintf(w, "  Revenue-critical  %d\n", summary.CriticalBroken)
@@ -70,30 +66,17 @@ func Print(w io.Writer, ch *youtube.Channel, videos []youtube.Video, summary che
 	}
 	fmt.Fprintln(w)
 
+	if summary.Broken == 0 && summary.Warnings == 0 {
+		fmt.Fprintln(w, "No broken links found.")
+		fmt.Fprintln(w)
+	}
+
+	if summary.Broken > 0 {
+		printBrokenLinks(w, "Revenue-Critical Broken Links", summary.CriticalLinks, useColor, colorRed)
+		printBrokenLinks(w, "Other Broken Links", summary.BrokenLinks, useColor, colorRed)
+	}
+
 	if summary.Warnings > 0 {
-		if useColor {
-			fmt.Fprint(w, colorYellow)
-		}
-		fmt.Fprintln(w, " Warnings")
-		fmt.Fprintln(w, " "+strings.Repeat("─", 44))
-		if useColor {
-			fmt.Fprint(w, colorReset)
-		}
-		for i, r := range summary.WarnLinks {
-			fmt.Fprintf(w, "  %d. %-9s %s\n", i+1, linkLabel(r), r.URL)
-			fmt.Fprintf(w, "     → %q\n", r.VideoTitle)
-			fmt.Fprintf(w, "     %s\n", youtube.VideoURL(r.VideoID))
-			fmt.Fprintln(w)
-		}
+		fmt.Fprintf(w, "  %d warnings\n", summary.Warnings)
 	}
-
-	if summary.Broken == 0 {
-		if summary.Warnings == 0 {
-			fmt.Fprintln(w, "No broken links found.")
-		}
-		return
-	}
-
-	printBrokenLinks(w, "Revenue-Critical Broken Links", summary.CriticalLinks, useColor, colorRed)
-	printBrokenLinks(w, "Other Broken Links", summary.BrokenLinks, useColor, colorRed)
 }
