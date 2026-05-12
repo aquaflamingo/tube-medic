@@ -34,7 +34,8 @@ type apiChannelResponse struct {
 }
 
 type apiSearchResponse struct {
-	Items []struct {
+	NextPageToken string `json:"nextPageToken"`
+	Items         []struct {
 		ID struct {
 			VideoID string `json:"videoId"`
 		} `json:"id"`
