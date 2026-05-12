@@ -5,9 +5,9 @@ Tube Medic Report ─ "Broken Channel"
   Working           2
   Broken            2
 
- Broken Links
+[31m Other Broken Links
  ────────────────────────────────────────────
-  1. 404       https://example.com/404
+[0m  1. 404       https://example.com/404
      → "First Video"
      https://youtube.com/watch?v=v1
 

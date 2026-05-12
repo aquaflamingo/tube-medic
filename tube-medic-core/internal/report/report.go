@@ -27,6 +27,26 @@ func linkLabel(r checker.CheckResult) string {
 	return fmt.Sprintf("%d", r.StatusCode)
 }
 
+func printBrokenLinks(w io.Writer, header string, links []checker.CheckResult, useColor bool, colorCode string) {
+	if len(links) == 0 {
+		return
+	}
+	if useColor {
+		fmt.Fprint(w, colorCode)
+	}
+	fmt.Fprintln(w, " "+header)
+	fmt.Fprintln(w, " "+strings.Repeat("─", 44))
+	if useColor {
+		fmt.Fprint(w, colorReset)
+	}
+	for i, r := range links {
+		fmt.Fprintf(w, "  %d. %-9s %s\n", i+1, linkLabel(r), r.URL)
+		fmt.Fprintf(w, "     → %q\n", r.VideoTitle)
+		fmt.Fprintf(w, "     %s\n", youtube.VideoURL(r.VideoID))
+		fmt.Fprintln(w)
+	}
+}
+
 // Print writes the full report to w.
 func Print(w io.Writer, ch *youtube.Channel, videos []youtube.Video, summary checker.Summary, q youtube.Quota) {
 	fmt.Fprintf(w, "Tube Medic Report ─ %q\n", ch.Name)
@@ -38,6 +58,9 @@ func Print(w io.Writer, ch *youtube.Channel, videos []youtube.Video, summary che
 		fmt.Fprintf(w, "  Warnings          %d\n", summary.Warnings)
 	}
 	fmt.Fprintf(w, "  Broken            %d\n", summary.Broken)
+	if summary.CriticalBroken > 0 {
+		fmt.Fprintf(w, "  Revenue-critical  %d\n", summary.CriticalBroken)
+	}
 	if q.Used > 0 {
 		remaining := "?"
 		if q.Remaining >= 0 {
@@ -71,13 +94,6 @@ func Print(w io.Writer, ch *youtube.Channel, videos []youtube.Video, summary che
 		return
 	}
 
-	fmt.Fprintln(w, " Broken Links")
-	fmt.Fprintln(w, " "+strings.Repeat("─", 44))
-
-	for i, r := range summary.BrokenLinks {
-		fmt.Fprintf(w, "  %d. %-9s %s\n", i+1, linkLabel(r), r.URL)
-		fmt.Fprintf(w, "     → %q\n", r.VideoTitle)
-		fmt.Fprintf(w, "     %s\n", youtube.VideoURL(r.VideoID))
-		fmt.Fprintln(w)
-	}
+	printBrokenLinks(w, "Revenue-Critical Broken Links", summary.CriticalLinks, useColor, colorRed)
+	printBrokenLinks(w, "Other Broken Links", summary.BrokenLinks, useColor, colorRed)
 }
