@@ -1,0 +1,17 @@
+Tube Medic Report ─ "Broken Channel"
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Videos scanned    2
+  Total links found 4
+  Working           2
+  Broken            2
+
+ Broken Links
+ ────────────────────────────────────────────
+  1. 404       https://example.com/404
+     → "First Video"
+     https://youtube.com/watch?v=v1
+
+  2. TIMEOUT   https://example.com/timeout
+     → "Second Video"
+     https://youtube.com/watch?v=v2
+
