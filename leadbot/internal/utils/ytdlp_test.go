@@ -10,10 +10,10 @@ func TestBuildChannelURL(t *testing.T) {
 		ident string
 		want  string
 	}{
-		{"UCabcdefghijklmnopqrstuv", "https://www.youtube.com/channel/UCabcdefghijklmnopqrstuv/about"},
-		{"@handle", "https://www.youtube.com/@handle/about"},
-		{"handle", "https://www.youtube.com/@handle/about"},
-		{"  @spaced  ", "https://www.youtube.com/@spaced/about"},
+		{"UCabcdefghijklmnopqrstuv", "https://www.youtube.com/channel/UCabcdefghijklmnopqrstuv"},
+		{"@handle", "https://www.youtube.com/@handle"},
+		{"handle", "https://www.youtube.com/@handle"},
+		{"  @spaced  ", "https://www.youtube.com/@spaced"},
 	}
 	for _, tc := range tests {
 		got := buildChannelURL(tc.ident)

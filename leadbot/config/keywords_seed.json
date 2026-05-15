@@ -1,46 +1,6 @@
 {
-  "keywords": [
-    "fitness course",
-    "fitness coaching",
-    "fitness how I make money",
-    "fitness sponsor",
-    "personal finance how I make money",
-    "personal finance my business",
-    "personal finance coaching",
-    "tech sponsor",
-    "tech collab",
-    "tech how I make money",
-    "business how I make money",
-    "business coaching",
-    "business sponsor",
-    "cooking course",
-    "cooking my business",
-    "cooking how I make money",
-    "travel sponsor",
-    "travel how I make money",
-    "gaming sponsor",
-    "self improvement course",
-    "self improvement coaching",
-    "self improvement how I make money",
-    "parenting how I make money",
-    "parenting sponsor",
-    "beauty sponsor",
-    "beauty how I make money",
-    "cooking collab",
-    "travel vlog business",
-    "fitness my business growth",
-    "tech reviewer sponsor"
-  ],
+  "keywords": ["fitness course"],
   "niche_categories": {
-    "fitness": "26",
-    "personal_finance": "27",
-    "tech": "28",
-    "business": "27",
-    "cooking": "26",
-    "travel": "19",
-    "gaming": "20",
-    "self_improvement": "27",
-    "parenting": "22",
-    "beauty": "22"
+    "fitness": "26"
   }
 }

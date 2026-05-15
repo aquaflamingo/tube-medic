@@ -56,7 +56,7 @@ func (c *YoutubeClient) SearchByCategory(categoryID string, maxResults int64) ([
 	}
 
 	call := c.service.Search.List([]string{"snippet"}).
-		Type("channel").
+		Type("video").
 		VideoCategoryId(categoryID).
 		MaxResults(maxResults)
 
@@ -68,10 +68,16 @@ func (c *YoutubeClient) SearchByCategory(categoryID string, maxResults int64) ([
 	c.quotaUsed += 100
 	slog.Debug("youtube api search by category", "category", categoryID, "results", len(resp.Items), "quota_used", c.quotaUsed)
 
+	seen := make(map[string]bool)
 	var ids []string
 	for _, item := range resp.Items {
-		if item.Id != nil && item.Id.ChannelId != "" {
-			ids = append(ids, item.Id.ChannelId)
+		if item.Snippet == nil {
+			continue
+		}
+		cid := item.Snippet.ChannelId
+		if cid != "" && !seen[cid] {
+			seen[cid] = true
+			ids = append(ids, cid)
 		}
 	}
 	return ids, nil

@@ -164,7 +164,12 @@ func searchAgencyChannels(db *core.DB, cfg *config.Config) (int, error) {
 			continue
 		}
 
+		seen := make(map[string]bool)
 		for _, id := range ids {
+			if seen[id] {
+				continue
+			}
+			seen[id] = true
 			exists, err := db.ChannelExists(id)
 			if err != nil || exists {
 				continue

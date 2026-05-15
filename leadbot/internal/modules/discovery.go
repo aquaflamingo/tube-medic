@@ -3,6 +3,7 @@ package modules
 import (
 	"fmt"
 	"log/slog"
+	"sync"
 
 	"github.com/aquaflamingo/ytleadbot/internal/config"
 	"github.com/aquaflamingo/ytleadbot/internal/core"
@@ -11,38 +12,61 @@ import (
 
 func DiscoverChannels(db *core.DB, cfg *config.Config) (int, error) {
 	var total int
+	var mu sync.Mutex
+	var wg sync.WaitGroup
+	sem := make(chan struct{}, cfg.KeywordConcurrency)
+	globalSeen := make(map[string]bool)
+
 	for _, kw := range cfg.Keywords {
-		slog.Info("searching keyword", "keyword", kw)
-		ids, err := utils.SearchKeywords(kw)
-		if err != nil {
-			slog.Warn("keyword search failed", "keyword", kw, "error", err)
-			continue
-		}
+		wg.Add(1)
+		go func(keyword string) {
+			defer wg.Done()
+			sem <- struct{}{}
+			defer func() { <-sem }()
 
-		slog.Info("keyword search returned channels", "keyword", kw, "count", len(ids))
-		for _, id := range ids {
-			exists, err := db.ChannelExists(id)
+			slog.Info("searching keyword", "keyword", keyword)
+			ids, err := utils.SearchKeywords(keyword)
 			if err != nil {
-				slog.Warn("error checking channel", "id", id, "error", err)
-				continue
-			}
-			if exists {
-				slog.Debug("channel already in db, skipping", "id", id)
-				continue
+				slog.Warn("keyword search failed", "keyword", keyword, "error", err)
+				return
 			}
 
-			job := &core.Job{
-				Type:    "enrich_channel",
-				Payload: id,
+			slog.Info("keyword search returned channels", "keyword", keyword, "count", len(ids))
+			for _, id := range ids {
+				mu.Lock()
+				if globalSeen[id] {
+					mu.Unlock()
+					continue
+				}
+				globalSeen[id] = true
+				mu.Unlock()
+
+				exists, err := db.ChannelExists(id)
+				if err != nil {
+					slog.Warn("error checking channel", "id", id, "error", err)
+					continue
+				}
+				if exists {
+					slog.Debug("channel already in db, skipping", "id", id)
+					continue
+				}
+
+				job := &core.Job{
+					Type:    "enrich_channel",
+					Payload: id,
+				}
+				if _, err := db.InsertJob(job); err != nil {
+					slog.Warn("failed to queue enrich job", "id", id, "error", err)
+					continue
+				}
+				slog.Info("queued channel for enrichment", "keyword", keyword, "channel_id", id)
+				mu.Lock()
+				total++
+				mu.Unlock()
 			}
-			if _, err := db.InsertJob(job); err != nil {
-				slog.Warn("failed to queue enrich job", "id", id, "error", err)
-				continue
-			}
-			slog.Info("queued channel for enrichment", "keyword", kw, "channel_id", id)
-			total++
-		}
+		}(kw)
 	}
+	wg.Wait()
 	return total, nil
 }
 
@@ -55,7 +79,7 @@ func DiscoverByCategory(db *core.DB, cfg *config.Config, ytClient *utils.Youtube
 	rem, err := db.BudgetRemaining("youtube_api")
 	if err != nil {
 		slog.Warn("failed to check youtube api budget", "error", err)
-	} else if rem < 100 {
+	} else if rem >= 0 && rem < 100 {
 		slog.Warn("youtube api budget nearly exhausted, skipping category discovery", "remaining", rem)
 		return 0, nil
 	}

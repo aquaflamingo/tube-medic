@@ -37,6 +37,9 @@ func TestLoad_Defaults(t *testing.T) {
 	if cfg.RequestDelay != 5 {
 		t.Errorf("RequestDelay = %d, want 5", cfg.RequestDelay)
 	}
+	if cfg.KeywordConcurrency != 3 {
+		t.Errorf("KeywordConcurrency = %d, want 3", cfg.KeywordConcurrency)
+	}
 	if cfg.YTApiKey != "" {
 		t.Errorf("YTApiKey = %q, want empty", cfg.YTApiKey)
 	}
@@ -49,6 +52,7 @@ func TestLoad_FromEnv(t *testing.T) {
 	os.Setenv("MAX_SUBS", "999999")
 	os.Setenv("MIN_SCORE", "5")
 	os.Setenv("REQUEST_DELAY", "10")
+	os.Setenv("KEYWORD_CONCURRENCY", "5")
 	defer func() {
 		os.Unsetenv("YT_API_KEY")
 		os.Unsetenv("MAX_ENRICHMENTS")
@@ -56,6 +60,7 @@ func TestLoad_FromEnv(t *testing.T) {
 		os.Unsetenv("MAX_SUBS")
 		os.Unsetenv("MIN_SCORE")
 		os.Unsetenv("REQUEST_DELAY")
+		os.Unsetenv("KEYWORD_CONCURRENCY")
 	}()
 
 	cfg, err := Load()
@@ -80,6 +85,9 @@ func TestLoad_FromEnv(t *testing.T) {
 	}
 	if cfg.RequestDelay != 10 {
 		t.Errorf("RequestDelay = %d", cfg.RequestDelay)
+	}
+	if cfg.KeywordConcurrency != 5 {
+		t.Errorf("KeywordConcurrency = %d, want 5", cfg.KeywordConcurrency)
 	}
 }
 

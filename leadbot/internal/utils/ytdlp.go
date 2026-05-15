@@ -75,9 +75,9 @@ func buildChannelURL(ident string) string {
 	ident = strings.TrimSpace(ident)
 	ident = strings.TrimPrefix(ident, "@")
 	if strings.HasPrefix(ident, "UC") && len(ident) == 24 {
-		return fmt.Sprintf("https://www.youtube.com/channel/%s/about", ident)
+		return fmt.Sprintf("https://www.youtube.com/channel/%s", ident)
 	}
-	return fmt.Sprintf("https://www.youtube.com/@%s/about", ident)
+	return fmt.Sprintf("https://www.youtube.com/@%s", ident)
 }
 
 func buildVideoURL(ident string) string {

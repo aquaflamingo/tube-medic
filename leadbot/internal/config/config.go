@@ -9,20 +9,21 @@ import (
 )
 
 type Config struct {
-	YTApiKey          string
-	MaxEnrichments    int
-	MinSubs           int64
-	MaxSubs           int64
-	MinScore          int
-	DataDir           string
-	LogDir            string
-	ExportDir         string
-	DBPath            string
-	Keywords          []string
-	NicheCategories   map[string]string
-	AgencySeeds       []AgencySeed
-	UserAgent         string
-	RequestDelay      int
+	YTApiKey           string
+	MaxEnrichments     int
+	MinSubs            int64
+	MaxSubs            int64
+	MinScore           int
+	DataDir            string
+	LogDir             string
+	ExportDir          string
+	DBPath             string
+	Keywords           []string
+	NicheCategories    map[string]string
+	AgencySeeds        []AgencySeed
+	UserAgent          string
+	RequestDelay       int
+	KeywordConcurrency int
 }
 
 type AgencySeed struct {
@@ -44,8 +45,9 @@ func Load() (*Config, error) {
 		ExportDir:         getEnvStr("EXPORT_DIR", "exports"),
 		DBPath:            getEnvStr("DB_PATH", "data/ytleadbot.db"),
 		UserAgent:         getEnvStr("USER_AGENT", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"),
-		RequestDelay:      getEnvInt("REQUEST_DELAY", 5),
-		NicheCategories:   defaultNicheCategories(),
+		RequestDelay:       getEnvInt("REQUEST_DELAY", 5),
+		KeywordConcurrency: getEnvInt("KEYWORD_CONCURRENCY", 3),
+		NicheCategories:    defaultNicheCategories(),
 	}
 
 	keywordsPath := getEnvStr("KEYWORDS_PATH", "config/keywords_seed.json")
