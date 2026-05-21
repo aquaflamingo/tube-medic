@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/http/cookiejar"
 	"net/url"
 	"strconv"
 	"strings"
@@ -12,7 +13,15 @@ import (
 
 const baseURL = "https://www.googleapis.com/youtube/v3"
 
-var httpClient = &http.Client{Timeout: 10 * time.Second}
+var httpClient = newHTTPClient()
+
+func newHTTPClient() *http.Client {
+	jar, err := cookiejar.New(nil)
+	if err != nil {
+		panic(err)
+	}
+	return &http.Client{Timeout: 10 * time.Second, Jar: jar}
+}
 
 // YouTube Data API v3 estimated costs per request type.
 const (
