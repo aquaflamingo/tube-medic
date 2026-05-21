@@ -1,25 +1,13 @@
 package checker
 
 import (
-	"net/http"
 	"sync"
-	"time"
 
 	"github.com/aquaflamingo/tubemedicmvp/internal/classifier"
 	"github.com/aquaflamingo/tubemedicmvp/internal/youtube"
 )
 
-var httpClient = &http.Client{
-	Timeout:   5 * time.Second,
-	Transport: &userAgentTransport{},
-}
-
-type userAgentTransport struct{}
-
-func (t *userAgentTransport) RoundTrip(req *http.Request) (*http.Response, error) {
-	req.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
-	return http.DefaultTransport.RoundTrip(req)
-}
+var httpClient = newBrowserClient()
 
 // CheckAll checks all scraped links concurrently using a worker pool.
 // concurrency sets the max number of simultaneous checks.
