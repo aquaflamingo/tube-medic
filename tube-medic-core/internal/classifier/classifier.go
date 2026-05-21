@@ -4,7 +4,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/aquaflamingo/tubemedicmvp/internal/youtube"
+	"github.com/aquaflamingo/tmcore/internal/youtube"
 )
 
 // Priority indicates the revenue importance of a link.

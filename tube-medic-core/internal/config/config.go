@@ -6,16 +6,11 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/aquaflamingo/tmcore"
 )
 
-type Config struct {
-	APIKey     string
-	ChannelURL string
-	MaxVideos  int
-	OutputFile string
-}
-
-func Load() (*Config, error) {
+func Load() (*tmcore.Config, string, error) {
 	loadEnvFile()
 
 	apiKey := flag.String("api-key", "", "YouTube Data API key (or set YT_API_KEY in .env)")
@@ -29,19 +24,18 @@ func Load() (*Config, error) {
 	}
 
 	if *apiKey == "" {
-		return nil, fmt.Errorf("API key required: set YT_API_KEY in .env or pass --api-key")
+		return nil, "", fmt.Errorf("API key required: set YT_API_KEY in .env or pass --api-key")
 	}
 
 	if *channel == "" {
-		return nil, fmt.Errorf("--channel is required")
+		return nil, "", fmt.Errorf("--channel is required")
 	}
 
-	return &Config{
+	return &tmcore.Config{
 		APIKey:     *apiKey,
 		ChannelURL: *channel,
 		MaxVideos:  *maxVideos,
-		OutputFile: *output,
-	}, nil
+	}, *output, nil
 }
 
 func loadEnvFile() {

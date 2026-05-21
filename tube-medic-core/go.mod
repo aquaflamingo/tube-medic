@@ -1,4 +1,4 @@
-module github.com/aquaflamingo/tubemedicmvp
+module github.com/aquaflamingo/tmcore
 
 go 1.26.2
 

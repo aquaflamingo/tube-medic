@@ -6,8 +6,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/aquaflamingo/tubemedicmvp/internal/checker"
-	"github.com/aquaflamingo/tubemedicmvp/internal/youtube"
+	"github.com/aquaflamingo/tmcore/internal/checker"
+	"github.com/aquaflamingo/tmcore/internal/youtube"
 )
 
 const bar = "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

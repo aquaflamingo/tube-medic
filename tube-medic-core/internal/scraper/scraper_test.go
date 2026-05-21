@@ -3,8 +3,8 @@ package scraper_test
 import (
 	"testing"
 
-	"github.com/aquaflamingo/tubemedicmvp/internal/scraper"
-	"github.com/aquaflamingo/tubemedicmvp/internal/youtube"
+	"github.com/aquaflamingo/tmcore/internal/scraper"
+	"github.com/aquaflamingo/tmcore/internal/youtube"
 )
 
 func TestExtractFromString(t *testing.T) {

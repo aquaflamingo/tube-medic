@@ -5,7 +5,7 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/aquaflamingo/tubemedicmvp/internal/classifier"
+	"github.com/aquaflamingo/tmcore/internal/classifier"
 )
 
 // Status represents the health of a checked URL.
