@@ -4,7 +4,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/aquaflamingo/tubemedicmvp/internal/youtube"
+	"github.com/aquaflamingo/tmcore/internal/youtube"
 )
 
 var urlRe = regexp.MustCompile(`https?://[^\s<>"']+`)

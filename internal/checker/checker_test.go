@@ -6,8 +6,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/aquaflamingo/tubemedicmvp/internal/checker"
-	"github.com/aquaflamingo/tubemedicmvp/internal/youtube"
+	"github.com/aquaflamingo/tmcore/internal/checker"
+	"github.com/aquaflamingo/tmcore/internal/youtube"
 )
 
 func TestClassify(t *testing.T) {
