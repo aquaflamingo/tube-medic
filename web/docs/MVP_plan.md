@@ -14,7 +14,7 @@ The Web module currently consists of a simple router, home layout, and a static 
 
 | Feature Area | CLI MVP (`tube-medic-mvp`) | Web App (`web`) | Status & Action |
 |:---|:---|:---|:---|
-| **Workspace Integration** | Defines core business packages | Individual module in `go.work` | **Ready**. Can import packages directly via `github.com/aquaflamingo/tubemedicmvp/internal/...` |
+| **Workspace Integration** | Defines core business packages | Individual module in `go.work` | **Ready**. Can import packages directly via `github.com/aqfl/tmcore` |
 | **API Configuration** | Loads `YT_API_KEY` from `.env` or CLI flags | Reads nothing | **Missing**. Need to load `.env` at web startup. |
 | **Channel Retrieval** | Resolves channel URLs/handles; fetches videos & descriptions; tracks API quotas | Hardcoded response | **Missing**. Need form input parsing and YouTube client integration. |
 | **Link Extraction** | Regex extraction + extracts 120-char context window | Hardcoded response | **Missing**. Integrate `scraper` package. |

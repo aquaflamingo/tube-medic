@@ -7,7 +7,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/aquaflamingo/tmcore"
+	"github.com/aqfl/tmcore"
 )
 
 func Load() (*tmcore.Config, string, error) {

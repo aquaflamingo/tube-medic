@@ -8,7 +8,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/aquaflamingo/tubemedic-web/internal/handlers"
+	"github.com/aqfl/tubemedic-web/internal/handlers"
 )
 
 func main() {

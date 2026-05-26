@@ -8,9 +8,9 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/aquaflamingo/tmcore/internal/checker"
-	"github.com/aquaflamingo/tmcore/internal/report"
-	"github.com/aquaflamingo/tmcore/internal/youtube"
+	"github.com/aqfl/tmcore/internal/checker"
+	"github.com/aqfl/tmcore/internal/report"
+	"github.com/aqfl/tmcore/internal/youtube"
 )
 
 var update = flag.Bool("update", false, "update golden files")

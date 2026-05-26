@@ -5,9 +5,9 @@ import (
 	"log/slog"
 	"time"
 
-	"github.com/aquaflamingo/ytleadbot/internal/config"
-	"github.com/aquaflamingo/ytleadbot/internal/core"
-	"github.com/aquaflamingo/ytleadbot/internal/utils"
+	"github.com/aqfl/tmleadbot/internal/config"
+	"github.com/aqfl/tmleadbot/internal/core"
+	"github.com/aqfl/tmleadbot/internal/utils"
 )
 
 func EnrichChannel(db *core.DB, cfg *config.Config, ident string) error {

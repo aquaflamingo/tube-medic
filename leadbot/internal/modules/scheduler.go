@@ -3,9 +3,9 @@ package modules
 import (
 	"log/slog"
 
-	"github.com/aquaflamingo/ytleadbot/internal/config"
-	"github.com/aquaflamingo/ytleadbot/internal/core"
-	"github.com/aquaflamingo/ytleadbot/internal/utils"
+	"github.com/aqfl/tmleadbot/internal/config"
+	"github.com/aqfl/tmleadbot/internal/core"
+	"github.com/aqfl/tmleadbot/internal/utils"
 )
 
 func RunDiscoverPipeline(db *core.DB, cfg *config.Config, ytClient *utils.YoutubeClient) (disc int, enr int, fail int, rerr error) {

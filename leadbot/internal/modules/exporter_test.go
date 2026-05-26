@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/aquaflamingo/ytleadbot/internal/core"
+	"github.com/aqfl/tmleadbot/internal/core"
 )
 
 func TestExportLeads_Empty(t *testing.T) {

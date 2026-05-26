@@ -3,8 +3,8 @@ package checker
 import (
 	"sync"
 
-	"github.com/aquaflamingo/tmcore/internal/classifier"
-	"github.com/aquaflamingo/tmcore/internal/youtube"
+	"github.com/aqfl/tmcore/internal/classifier"
+	"github.com/aqfl/tmcore/internal/youtube"
 )
 
 var httpClient = newBrowserClient()

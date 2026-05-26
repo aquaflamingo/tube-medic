@@ -8,10 +8,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/aquaflamingo/ytleadbot/internal/config"
-	"github.com/aquaflamingo/ytleadbot/internal/core"
-	"github.com/aquaflamingo/ytleadbot/internal/modules"
-	"github.com/aquaflamingo/ytleadbot/internal/utils"
+	"github.com/aqfl/tmleadbot/internal/config"
+	"github.com/aqfl/tmleadbot/internal/core"
+	"github.com/aqfl/tmleadbot/internal/modules"
+	"github.com/aqfl/tmleadbot/internal/utils"
 )
 
 func main() {

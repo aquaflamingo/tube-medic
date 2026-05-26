@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/aquaflamingo/tubemedic-web/internal/handlers"
+	"github.com/aqfl/tubemedic-web/internal/handlers"
 )
 
 func TestHandleScan_ValidationErrors(t *testing.T) {

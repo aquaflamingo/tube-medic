@@ -1,4 +1,4 @@
-module github.com/aquaflamingo/ytleadbot
+module github.com/aqfl/tmleadbot
 
 go 1.25.0
 

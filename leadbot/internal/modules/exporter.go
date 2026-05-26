@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/aquaflamingo/ytleadbot/internal/core"
+	"github.com/aqfl/tmleadbot/internal/core"
 )
 
 type ExportLead struct {

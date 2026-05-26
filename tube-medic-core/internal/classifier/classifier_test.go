@@ -3,8 +3,8 @@ package classifier_test
 import (
 	"testing"
 
-	"github.com/aquaflamingo/tmcore/internal/classifier"
-	"github.com/aquaflamingo/tmcore/internal/youtube"
+	"github.com/aqfl/tmcore/internal/classifier"
+	"github.com/aqfl/tmcore/internal/youtube"
 )
 
 func TestClassify_urlPatterns(t *testing.T) {

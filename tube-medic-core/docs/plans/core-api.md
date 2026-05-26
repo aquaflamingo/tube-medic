@@ -3,13 +3,13 @@
 ## Goal
 
 Refactor from a CLI-only binary to a "core + satellite" pattern:
-- **Core:** root-level public Go package (`github.com/aquaflamingo/tmcore`) — exports `Config`, `Report`, `RunScan`
+- **Core:** root-level public Go package (`github.com/aqfl/tmcore`) — exports `Config`, `Report`, `RunScan`
 - **Satellite 1:** CLI (`cmd/tube-medic/`) — thin wrapper around core + terminal output
 - **Satellite 2 (future):** Web module — imports core package for programmatic access
 
 ## Why
 
-- The web module (`github.com/aquaflamingo/tubemedic-web`) needs to invoke the scan pipeline programmatically without shelling out
+- The web module (`github.com/aqfl/tubemedic-web`) needs to invoke the scan pipeline programmatically without shelling out
 - CLI-specific concerns (flag parsing, terminal colors, file output) should not leak into the public API
 - Clear dependency direction: packages import core, not the other way
 

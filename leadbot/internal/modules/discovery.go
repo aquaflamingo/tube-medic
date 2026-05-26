@@ -5,9 +5,9 @@ import (
 	"log/slog"
 	"sync"
 
-	"github.com/aquaflamingo/ytleadbot/internal/config"
-	"github.com/aquaflamingo/ytleadbot/internal/core"
-	"github.com/aquaflamingo/ytleadbot/internal/utils"
+	"github.com/aqfl/tmleadbot/internal/config"
+	"github.com/aqfl/tmleadbot/internal/core"
+	"github.com/aqfl/tmleadbot/internal/utils"
 )
 
 func DiscoverChannels(db *core.DB, cfg *config.Config) (int, error) {

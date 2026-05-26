@@ -8,8 +8,8 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/aquaflamingo/tmcore"
-	"github.com/aquaflamingo/tubemedic-web/templates"
+	"github.com/aqfl/tmcore"
+	"github.com/aqfl/tubemedic-web/templates"
 )
 
 func HandleIndex(w http.ResponseWriter, r *http.Request) {

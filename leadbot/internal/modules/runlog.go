@@ -4,7 +4,7 @@ import (
 	"log/slog"
 	"time"
 
-	"github.com/aquaflamingo/ytleadbot/internal/core"
+	"github.com/aqfl/tmleadbot/internal/core"
 )
 
 func startRun(db *core.DB, runType string) int64 {

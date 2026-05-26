@@ -5,9 +5,9 @@ package tmcore
 import (
 	"fmt"
 
-	"github.com/aquaflamingo/tmcore/internal/checker"
-	"github.com/aquaflamingo/tmcore/internal/scraper"
-	"github.com/aquaflamingo/tmcore/internal/youtube"
+	"github.com/aqfl/tmcore/internal/checker"
+	"github.com/aqfl/tmcore/internal/scraper"
+	"github.com/aqfl/tmcore/internal/youtube"
 )
 
 // Config holds scan parameters.

@@ -5,9 +5,9 @@ import (
 	"io"
 	"os"
 
-	"github.com/aquaflamingo/tmcore"
-	"github.com/aquaflamingo/tmcore/internal/config"
-	"github.com/aquaflamingo/tmcore/internal/report"
+	"github.com/aqfl/tmcore"
+	"github.com/aqfl/tmcore/internal/config"
+	"github.com/aqfl/tmcore/internal/report"
 )
 
 func main() {

@@ -1,4 +1,4 @@
-module github.com/aquaflamingo/tmcore
+module github.com/aqfl/tmcore
 
 go 1.26.2
 
