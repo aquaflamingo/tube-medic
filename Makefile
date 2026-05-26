@@ -18,8 +18,8 @@ run-port:
 
 # Tidy all modules in the workspace
 tidy:
-	@export GOCACHE=$(GOCACHE_DIR) && cd tube-medic-mvp && go mod tidy
-	@export GOCACHE=$(GOCACHE_DIR) && cd tube-medic-lead-bot && go mod tidy
+	@export GOCACHE=$(GOCACHE_DIR) && cd tube-medic-core && go mod tidy
+	@export GOCACHE=$(GOCACHE_DIR) && cd leadbot && go mod tidy
 	@export GOCACHE=$(GOCACHE_DIR) && cd web && go mod tidy
 
 # Clean build artifacts
@@ -27,4 +27,16 @@ clean:
 	rm -rf bin/
 	rm -rf $(GOCACHE_DIR)
 
-.PHONY: build run run-port tidy clean
+# Build all modules in the workspace
+build-all:
+	@export GOCACHE=$(GOCACHE_DIR) && go build ./...
+
+# Test all modules in the workspace
+test-all:
+	@export GOCACHE=$(GOCACHE_DIR) && go test ./...
+
+# Vet all modules in the workspace
+vet:
+	@export GOCACHE=$(GOCACHE_DIR) && go vet ./...
+
+.PHONY: build run run-port tidy clean build-all test-all vet

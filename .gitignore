@@ -1,0 +1,29 @@
+.gocache/
+.gomodcache/
+bin/
+*.exe
+*.test
+*.out
+/vendor/
+dist/
+.env
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Compiled binaries
+server
+/tube-medic
+
+# Leadbot data / exports / logs
+leadbot/data/
+leadbot/exports/
+leadbot/logs/
+leadbot/bin/
+
+# yt-dlp static binary
+leadbot/internal/utils/ytdlp_static/yt-dlp
