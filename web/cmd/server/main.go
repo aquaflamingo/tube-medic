@@ -44,7 +44,7 @@ func loadEnv() {
 	paths := []string{
 		".env",
 		"../.env",
-		"../tube-medic-mvp/.env",
+		"../tube-medic-core/.env",
 	}
 
 	for _, path := range paths {
